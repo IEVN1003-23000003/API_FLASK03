@@ -1,0 +1,31 @@
+<!--rdio botones que diga que figura quiero y segun ello me diga su area-->
+{% extends "layout.html" %}
+
+{% block content %}
+    {% import "_macros.html" as macro %}
+    <h1>Calculo de áreas</h1>
+
+    <form class="form-control" action="" method="post">
+        {{macro.campoNuevo(form.l1)}}
+        {{macro.campoNuevo(form.l2)}}
+
+
+        <input type="radio" id="triangulo" name="figura" value="triangulo">
+        <label for="">Triángulo L1= Base L2=Altura</label><br>
+        <input type="radio" id="rectangulo" name="figura" value="rectangulo" checked>
+        <label for="">Rectángulo L1= Base L2=Altura</label><br>
+        <input type="radio" id="circulo" name="figura" value="circulo">
+        <label for="">Círculo L1= radio </label><br>
+        <input type="radio" id="pentagono" name="figura" value="pentagono" checked>
+        <label for="">Pentágono L1= Lado L2=Apotema</label><br>
+
+
+        <button type="submit" class="btn btn-primary btn-lg mt-3">Calcular Área</button>
+        </form>
+
+        <h2>Lado 1: {{l1}}</h2>
+        <h2>Lado 2: {{l2}}</h2>
+        <h2>area: {{area}}</h2>
+
+
+{% endblock %}

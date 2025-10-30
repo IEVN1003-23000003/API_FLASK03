@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+import forms
 
 app = Flask (__name__)
 
@@ -69,6 +70,43 @@ def operas():
 def distancia():
     return render_template('distancia.html')
 
+@app.route('/alumnos', methods=['GET', 'POST'] )
+def alumnos():
+    mat=0
+    nom=""
+    ape=""
+    em=""
+    alumnos_clase=forms.UserForm(request.form)
+    if request.method=="POST":
+        mat=alumnos_clase.matricula.data
+        nom=alumnos_clase.nombre.data
+        ape=alumnos_clase.apellido.data
+        em=alumnos_clase.correo.data
+    return render_template('alumnos.html', form=alumnos_clase, mat=mat, nom=nom, ape=ape, em=em)
+
+
+@app.route('/figuras', methods=['GET', 'POST'] )
+def figuras():
+    l1=0
+    l2=0
+    figura=""
+    area=0
+    figuras_clase=forms.User2Form(request.form)
+    if request.method=="POST":
+        l1=figuras_clase.l1.data
+        l2=figuras_clase.l2.data
+        figura = request.form.get('figura')
+        if figura == 'rectangulo':
+            area = int(l1) * int(l2)
+        elif figura == 'triangulo':
+            area = (int(l1) * int(l2)) / 2
+        elif figura == 'circulo':
+            area = 3.1416 * (int(l1) ** 2)  # l1 radio  **elevar pyton
+        elif figura == 'pentagono':
+            area = (5 * int(l1) * l2) / 2  
+        else:
+            area = 0  
+    return render_template('figuras.html', form=figuras_clase, l1=l1, l2=l2, area=area)
 
 
 

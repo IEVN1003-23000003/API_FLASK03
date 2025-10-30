@@ -1,5 +1,14 @@
-{% extends "layout.html"%}
+{% extends "layout.html" %}
 
 {% block content %}
-    <h1>Distancia</h1>
+    {% import "_macros.html" as macro %}
+    <h1>Distancias</h1>
+
+    <form class="form-control" action="" method="post">
+        {{ macro.campo(name='x1', placeholder='Ingrese X1') }}
+        {{ macro.campo(name='y1', placeholder='Ingrese Y1') }}
+        {{ macro.campo(name='x2', placeholder='Ingrese X2') }}
+        {{ macro.campo(name='y2', placeholder='Ingrese Y2') }}
+
+        </form>
 {% endblock %}
