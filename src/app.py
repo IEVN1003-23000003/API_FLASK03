@@ -2,17 +2,26 @@ from flask import Flask, jsonify, request
  
 from flask_mysqldb import MySQL
  
-##from flask_cors import CORS
- 
-from config import config
 from flask_cors import CORS
  
- 
-app = Flask (__name__)
-CORS(app, resources={r"/alumnos/*": {"origins": "http://localhost:4200"}})
+from config import config
+##from flask_cors import CORS 
+##app = Flask (__name__)
+##CORS(app, resources={r"/alumnos/*": {"origins": "http://localhost:4200"}})
+
+##conexion=MySQL(app)
+
+
+app = Flask(__name__)
+CORS(app, supports_credentials=True)
+
+
+
+
 conexion=MySQL(app)
- 
-conexion = MySQL(app)
+
+
+
  
 @app.route('/alumnos', methods = ['GET'])
 def listar_alumnos():
@@ -50,8 +59,7 @@ def leer_alumno_bd(matricula):
         raise ex
    
  
- 
-@app.route("/alumnos",methods=['POST'])
+@app.route("/alumnos",methods=['POST', 'OPTIONS'])
 def registrar_alumno():
     try:
         alumno=leer_alumno_bd(request.json['matricula'])
@@ -94,7 +102,7 @@ def actualizar_curso(mat):
 
 ## DELETE
 
-@app.route('/alumnos/<mat>', methods=['DELETE'])
+@app.route('/alumnos/<int:mat>', methods=['DELETE', 'OPTIONS'])
 def eliminar_curso(mat):
     try:
         alumno = leer_alumno_bd(mat)
@@ -108,9 +116,23 @@ def eliminar_curso(mat):
             return jsonify({'mensaje': "Alumno no encontrado.", 'exito': False})
     except Exception as ex:
         return jsonify({'mensaje': "Error", 'exito': False})
+    
+
+    ##EL DELETE PIDE UN GET
+
+@app.route('/alumnos/<int:mat>', methods=['GET'])
+def leer_alumno(mat):
+    try:
+        alumno = leer_alumno_bd(mat)
+        if alumno:
+            return jsonify({'alumno': alumno, 'mensaje': 'Alumno encontrado', 'exito': True})
+        else:
+            return jsonify({'mensaje': 'Alumno no encontrado', 'exito': False})
+    except Exception as ex:
+        return jsonify({'mensaje': "Error", 'exito': False})
  
 def pagina_no_encontrada(error):
-    return "<h1>La página que intentas buscar no existe</h1>", 404
+    return "<h1>La página que intentas buscar no existe </h1>", 404
  
 if __name__ ==  '__main__':
     app.config.from_object(config['development'])
